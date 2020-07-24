@@ -11,11 +11,11 @@ canvas {
 </head>
 <body onload="startGame()">
 <script>
-
-var piece1;
+ 
+var piece1;                                                         //two pieces for the two boxes on screen
 var piece2;
 var active;
-var notactive;
+var notactive;                                                     //active and nonactive store the box which was clicked on and the one which wasn't clicked on respectively (both cannot be moved at the same time)
 
 function startGame() {
     x1 = Math.floor(Math.random() * 500);
@@ -23,7 +23,7 @@ function startGame() {
     x2 = 0;
     y2 = 0;
     gapx2 = 500-x1;
-    gapy2 = 500-y1;
+    gapy2 = 500-y1;                                                          //validation for ensuring both boxes are not placed at overlapping positions, else issues tend to pop up while registering the click event
     if (x1 <= 100)
     {
         x2 = Math.floor(Math.random() * (gapx2 - 100)) + x1 + 100;
@@ -55,7 +55,7 @@ function startGame() {
     }
     }
     piece1 = new component(100, 100, "rgba(130, 49, 181)", x1, y1);
-    piece2 = new component(100, 100, "rgba(65, 240, 202)", x2, y2);
+    piece2 = new component(100, 100, "rgba(65, 240, 202)", x2, y2);                  //creating the new boxes
     myGameArea.start();
 }
 
@@ -67,7 +67,7 @@ var myGameArea = {
         this.canvas.id = "can";
         this.canvas.tabIndex=1;
         document.getElementById("root").appendChild(this.canvas);
-        document.getElementById("can").addEventListener('mousedown',function(event)
+        document.getElementById("can").addEventListener('mousedown',function(event)                   //adding event listener to use the mouse to select one box to move
         {
             var x = event.clientX;
             var y = event.clientY;
@@ -82,7 +82,7 @@ var myGameArea = {
                 notactive = piece1;
             }
         },false);
-        document.getElementById("can").addEventListener('keydown', function(event) {    
+        document.getElementById("can").addEventListener('keydown', function(event) {                      //adding event listener to move the selected (or active) box with the arrow keys from the keyboard
     var x = event.key;
     if (x == 'ArrowUp')
     {
@@ -101,7 +101,7 @@ var myGameArea = {
     }
     else if (x == 'ArrowRight')
     {
-        active.speedX = 1; 
+        active.speedX = 1;                                                                      //movement adjustments done on pressing arrow keys on the keyboard
         updateGameArea();
     }},false);
     document.getElementById("can").addEventListener('keyup', function() {    
@@ -113,10 +113,10 @@ var myGameArea = {
     piece1.update();
     piece2.newPos();
     piece2.update();
-    updateGameArea();},
+    updateGameArea();},                                           
     clear : function() {
         c = document.getElementById("can").getContext("2d");
-        c.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        c.clearRect(0, 0, this.canvas.width, this.canvas.height);                                //clear rectangles for redrawing them for every arrow key press
     }
 }
 
@@ -128,11 +128,11 @@ function component(width, height, color, x, y) {
     this.x = x;
     this.y = y;    
     this.update = function() {
-        ctx = document.getElementById("can").getContext("2d");
+        ctx = document.getElementById("can").getContext("2d");                                    //used to select the canvas and draw the rectangle at its updated position following arrow key press
         ctx.fillStyle = color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
     }
-    this.newPos = function() {
+    this.newPos = function() {                                                               //used to update the position of the selected box (or active element)
             this.x += this.speedX;
             if (this.x <= 0 || this.x >= 600)
             {
@@ -146,7 +146,7 @@ function component(width, height, color, x, y) {
     }    
 }
 
-function updateGameArea() {
+function updateGameArea() {                                                                 //update game board whenever a box is selected and the arrow keys are pressed
     if (active)
     {
     myGameArea.clear();
